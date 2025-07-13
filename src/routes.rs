@@ -1,8 +1,8 @@
-use axum::Router;
-use crate::handlers::user_handler::register_routes;
+use axum::{Router, routing::post};
+use crate::handlers::create_user_handler;
 
-pub async fn create_app() -> Router {
+pub async fn create_app(pool: sqlx::PgPool) -> Router {
     Router::new()
-        .nest("/users", register_routes())
+        .route("/users", post(create_user_handler))
+        .with_state(pool)
 }
-
